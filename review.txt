@@ -1,1 +1,43 @@
 --My Own Review on Runtime Verification--
+
+Q1. What is your take-away message from this paper?
+ANS: This paper is primariliy focussed on Runtime Veification. Runtime Verification is a method used in computer science and SE to monitor and check the behaviour of a system or program during its execution or runtime. It involves observing and analyzing the systems' behaviour with predefined specification and properties, to ensure it meets those specs and properties. In this paper the author talks about an existing framework for Runtime Verificaition, which is JAVAMOP(Java based Motoring oriented programming), in which he found 652 violations of manually written specs and 200 violations of automatically mined specs. Though most of these were violations, about 82-97 percent of them were false alarms, i.e., not real bugs. These false alarm rates are worrisome.
+
+Q2. What is the motivation for this work (both people problem and technical problem), and its distillation into a research
+question? Why doesn’t the people problem have a trivial solution? What are the previous solutions and why are they
+inadequate?
+ANS: The motivation for this work is to study the bug-finding effectiveness of previously proposed specifications in runtime verification. In this paper specification/specs mean "a way to use api as intended by the developer or an analyst". We consider a spec effective for bug finding if it can catch true bugs
+but does not generate too many false alarms.
+Previous runtime verification studies mostly focussed on effciency of monitoring, but this paper focussed on effectiveness of the bug finding specifications.
+Most of the previous studies were conducted on small number of open-source projects. In contrast this paper the studies were conducted on 200 open-source projects. Thirdly, in previous studies, any spec-violation was assumed to be bug, but in this paper spec-violoation were categorised in two parts false alarms or real bug. Only the real bugs were notified to the developers of the open source projects.
+
+Q3. What is the proposed solution (hypothesis, idea, design)? Why is it believed it will work? How does it represent an improvement? How is the solution achieved?
+ANS: The proposed idea is to categorise all the violations in runtime verification in 3 parts, TrueBug, FalseAlarm, HardToInspect. True bug is a potential bug which can be reported to the developer of the system or program. False Alarm is a violation which does not indicate bug in code but effectively a bug ot fault in specifications. HardToImspect are the violations which is hard to classify as a TrueBug or a FalseAlarm. It may be because the source code is missing or is hard to identify. This categorisation helped in reporting the bugs which are impoortant, discarding the False Alarms, and since as discussed False Alarm rates are substantially higher in specs these days, number of bugs to be reported is lower compared to if we had to reort all the bugs. A bug was confirmed to be a TrueBug if a group of independent reviewers identified it as a TrueBug
+
+Q4. What is the author’s evaluation of the solution? What logic, argument, evidence, artifacts (e.g., a proof-of-concept system), or experiments are presented in support of the idea?
+ANS: The author evaluated mainly 3 part of specs.
+1. Runtime Overhead of monitoring
+2. Number of Bugs found in violations
+3. False Alarm rates among the violations
+The runtime overhead was calculated as (MOP-BASE)/BASE *100%, where MOP is the time to run the code while Monitoring, base is the time to run the code without monitoring. The runtime overhead in all specs is under 4.3x. 
+False alarm rate was calculated as FA/(TB+FA), where FA is false alarm and TB is TrueBug. FAR for automatically mined specs is 97.89 %(4 TB and 186 FA out of 200 Violations).
+Joda-time(Which is the standard date and time lbrary in Java) accpeted most pull requests for TrueBugs(37 out of 40) based on violation of the manually written spec BAOS. 3 pull requests were rejected mostly because of limited domain knowledge. 
+
+Q5. What is your analysis of the identified problem, idea and evaluation? Is this a good idea? What flaws do you perceive in the work? What are the most interesting or controversial ideas? For work that has practical implications, ask whether this will work, who would want it, what it will take to give it to them, and when might it become a reality?
+ANS: I think this process of categorising the violations in 3 sub-categories is a good apporach. This shows how most of the currently written specifications have high false alarm rates. One minor flaw which I think is there was less discussion on HardToIdentify violations. Maybe because they were less in number in this particular study. But if the number were large the results might have been different considering that we did not take into account HardToIdentify violations while calculating False Alarm Rates.But still this is a really good approach for developers and analysts to identify bugs in their system or program easily and effectively along with maintaining efficiency.
+
+Q6. What are the paper’s contributions (author’s and your opinion)? Ideas, methods, software, experimental results, experimental techniques...?
+ANS: Answer to this question is similar to Q No. 5. Experimental results and datas are discussed in Q1 and Q4. 
+
+Q7. What are future directions for this research (author’s and yours, perhaps driven by shortcomings or other critiques)?
+ANS: Based on the results of the research
+1. There should be increased focus on bug finding effectiveness of the specs, instead of only consdering efficiency(Overhead). It is concerning due to high false alarm rates
+2. Some specs are less effective compared others. This leads to poor bug finding capabilities. While some specs when violated indicate bug with a very high probabilty without considering the possibilty of false alarm.
+3. Specs should be tested on large amount of open source projects before releasing them. False alarm rates should also be taken into consideration.
+4. Confirimg detected bugs(TrueBugs) with developers should be the first priority. This process is very time consuming. Steps could be taken to automize the categorization of Violations.
+5. Open spec repositories would build a community of slef driven developers in this domain.
+
+Q8. What questions are you left with? What questions would you like to raise in an open discussion of the work (review
+interesting and controversial points, above)? What do you find difficult to understand? List as many as you can, at
+least three, not including questions that can be answered quickly by searching the internet.
+ANS: I think this domain could be made even more efficient by plugging machine learning techniques to categorise the violations into FalseAlarm, TrueBug and HardToInspect. This might increase the computational overhead drastically, but this can be reduced by adopting efficient methods. The effectiveness in this machine learning approach may be subject to experiments. 
