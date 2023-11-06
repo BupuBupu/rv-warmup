@@ -1,2 +1,2 @@
 # rv-warmup
-For the task related to research intern
+For the task related to Runtime Verification
